@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Building</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Centering the container */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url("{{ url_for('static', filename='web_bg.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .dashboard-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        .btn-option {
+            width: 100%;
+            height: 50px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-option:hover {
+            background: #2980b9;
+        }
+        .btn-option.selected {
+            background: #2ecc71;
+        }
+        .submit-btn {
+            width: 100%;
+            height: 50px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            cursor: pointer;
+            display: none;
+        }
+        .submit-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="dashboard-link">← Dashboard</a>
+        <h1>Select Building Block</h1>
+        <form method="POST" id="building-form">
+            <input type="hidden" name="building_block" id="selected-building">
+            <div class="btn-group">
+                <button type="button" class="btn-option" data-value="Amar Das Block">Amar Das Block</button>
+                <button type="button" class="btn-option" data-value="Arjan Dev Block">Arjan Dev Block</button>
+                <button type="button" class="btn-option" data-value="Hari Krishnan Block">Hari Krishnan Block</button>
+                <button type="button" class="btn-option" data-value="Maharaja Block">Maharaja Block</button>
+                <button type="button" class="btn-option" data-value="Siddhu Block">Siddhu Block</button>
+                <button type="button" class="btn-option" data-value="Ram Das Block">Ram Das Block</button>
+            </div>
+            <button type="submit" class="submit-btn" id="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn-option').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove 'selected' class from all buttons
+                document.querySelectorAll('.btn-option').forEach(btn => btn.classList.remove('selected'));
+                
+                // Add 'selected' class to clicked button
+                this.classList.add('selected');
+                
+                // Set hidden input value
+                document.getElementById('selected-building').value = this.getAttribute('data-value');
+                
+                // Show submit button
+                document.getElementById('submit-btn').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

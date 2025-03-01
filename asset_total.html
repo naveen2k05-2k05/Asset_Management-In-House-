@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Totals</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="dashboard-link">← Dashboard</a>
+        <h1>Total Assets Overview</h1>
+        
+        {% for building in buildings %}
+        <div class="building-section">
+            <h2>{{ building }}</h2>
+            <h3>Total Assets:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Wooden Stool</th>
+                        <th>Steel Stool</th>
+                        <th>Ceiling Fan</th>
+                        <th>Wall Mount Fan</th>
+                        <th>Pedestal Fan</th>
+                        <th>Water Dispenser</th>
+                        <th>Bubble Tap</th>
+                        <th>Notice Board</th>
+                        <th>Marker Board</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for total in totals[building] %}
+                        <td>{{ total if total else 0 }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Floor-wise Totals:</h3>
+            {% for floor in totals[building + '_floors'] %}
+            <div class="floor-section">
+                <h4>Floor {{ floor[0] }}</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Wooden Stool</th>
+                            <th>Steel Stool</th>
+                            <th>Ceiling Fan</th>
+                            <th>Wall Mount Fan</th>
+                            <th>Pedestal Fan</th>
+                            <th>Water Dispenser</th>
+                            <th>Bubble Tap</th>
+                            <th>Notice Board</th>
+                            <th>Marker Board</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for item in floor[1:] %}
+                            <td>{{ item if item else 0 }}</td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

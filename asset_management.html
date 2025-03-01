@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Management - {{ building_block }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="{{ url_for('dashboard') }}" class="dashboard-link">← Dashboard</a>
+            <h1>{{ building_block }}</h1>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Floor</th>
+                        <th>Wooden Stool</th>
+                        <th>Steel Stool</th>
+                        <th>Ceiling Fan</th>
+                        <th>Wall Mount Fan</th>
+                        <th>Pedestal Fan</th>
+                        <th>Water Dispenser</th>
+                        <th>Bubble Tap</th>
+                        <th>Notice Board</th>
+                        <th>Marker Board</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for asset in assets %}
+                    <tr data-id="{{ asset[0] }}">
+                        <td>{{ asset[2] }}</td>
+                        <td><input type="number" value="{{ asset[3] }}"></td>
+                        <td><input type="number" value="{{ asset[4] }}"></td>
+                        <td><input type="number" value="{{ asset[5] }}"></td>
+                        <td><input type="number" value="{{ asset[6] }}"></td>
+                        <td><input type="number" value="{{ asset[7] }}"></td>
+                        <td><input type="number" value="{{ asset[8] }}"></td>
+                        <td><input type="number" value="{{ asset[9] }}"></td>
+                        <td><input type="number" value="{{ asset[10] }}"></td>
+                        <td><input type="number" value="{{ asset[11] }}"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <button class="btn" onclick="saveChanges()">Save Changes</button>
+    </div>
+
+    <script>
+        function saveChanges() {
+            const data = []
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const inputs = row.querySelectorAll('input')
+                data.push({
+                    id: row.dataset.id,
+                    wooden_stool: inputs[0].value,
+                    steel_stool: inputs[1].value,
+                    ceiling_fan: inputs[2].value,
+                    wall_mount_fan: inputs[3].value,
+                    pedestal_fan: inputs[4].value,
+                    water_dispenser: inputs[5].value,
+                    bubble_tap: inputs[6].value,
+                    notice_board: inputs[7].value,
+                    marker_board: inputs[8].value
+                })
+            })
+            
+            fetch(window.location.href, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            }).then(response => response.json())
+              .then(data => {
+                  alert(data.status);
+              })
+        }
+    </script>
+</body>
+</html>

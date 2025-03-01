@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="dashboard-link">← Dashboard</a>
+        <h1>Record History</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset ID</th>
+                    <th>Change Description</th>
+                    <th>Change Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in history %}
+                <tr>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="description-box">
+            <textarea placeholder="Enter change description"></textarea>
+            <button class="btn" onclick="saveDescription()">Save Description</button>
+            <button class="btn" onclick="window.print()">Print</button>
+        </div>
+    </div>
+
+    <script>
+        function saveDescription() {
+            const description = document.querySelector('textarea').value
+            fetch(window.location.href, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `description=${encodeURIComponent(description)}`
+            }).then(() => {
+                location.reload()
+            })
+        }
+    </script>
+</body>
+</html>
